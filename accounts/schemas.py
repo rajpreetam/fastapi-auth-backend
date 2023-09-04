@@ -22,8 +22,8 @@ class RegisterUserResponseModel(CustomResponseModel):
 
 
 class TokenData(BaseModel):
-    access: str
-    refresh: str
+    access_token: str
+    refresh_token: str
 
 
 class TokenResponseModel(CustomResponseModel):

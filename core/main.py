@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, status
+from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from core.utils.schemas.custom_response_schema import CustomResponseModel
@@ -17,6 +18,17 @@ async def internal_server_exception_handler(request: Request, exc: InternalServe
         'data': exc.data,
         'message': exc.message
     }, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse({
+        'success': False,
+        'status_code': exc.status_code,
+        'data': None,
+        'message': exc.detail
+    }, status_code=exc.status_code)
+
 
 origins = [
     'http://127.0.0.1:3000',

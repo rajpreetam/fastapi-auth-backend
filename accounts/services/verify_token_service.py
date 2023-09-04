@@ -1,16 +1,16 @@
-from accounts.schemas import VerifyTokenRequestModel
 from core.utils.custom_exceptions import InternalServerError
 from core.utils.custom_response import CustomResponse
 from jose import jwt
 from core.settings import get_settings
 from datetime import datetime
+from fastapi import Request
 
 settings = get_settings()
 
 
-def verify_token_service(db, data: VerifyTokenRequestModel):
+def verify_token_service(request: Request):
     try:
-        access = data.access
+        access = request.cookies.get('access_token') or ''
         payload = jwt.decode(access, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         exp = payload['exp']
         exp_time = datetime.fromtimestamp(exp)
@@ -33,7 +33,7 @@ def verify_token_service(db, data: VerifyTokenRequestModel):
             False,
             403,
             None,
-            'Access token is invalid'
+            'Access token is invalid or expired'
         ).json_response()
 
     except Exception as e:
