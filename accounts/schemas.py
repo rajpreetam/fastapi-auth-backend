@@ -28,11 +28,3 @@ class TokenData(BaseModel):
 
 class TokenResponseModel(CustomResponseModel):
     data: TokenData
-
-
-class RefreshRequestModel(BaseModel):
-    refresh: str
-
-
-class VerifyTokenRequestModel(BaseModel):
-    access: str

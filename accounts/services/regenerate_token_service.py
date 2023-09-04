@@ -1,6 +1,4 @@
 from fastapi import Response, Request
-from fastapi.exceptions import HTTPException
-from accounts.schemas import RefreshRequestModel
 from core.utils.custom_exceptions import InternalServerError
 from jose import jwt
 from core.settings import get_settings
